@@ -1,0 +1,75 @@
+// Use DBML to define your database structure
+// Docs: https://github.com/holistics/dbml/tree/master/dbml-homepage/docs
+
+Table CUSTOMER {
+  CUSTOMERID integer [primary key]
+  CUSTOMERNAME nvarchar
+  CUSTOMERGENDER nvarchar 
+  CUSTOMERPHONE integer
+}
+
+Table TABLES {
+  TABLEID integer [primary key]
+  TABLENO integer
+  CUSTOMERID integer 
+}
+
+Table STAFFS {
+  STAFFSID integer [primary key]
+  STAFFSTYPE nvarchar
+  STAFFSLASTLOGIN nvarchar 
+  STAFFSSECURITYQA nvarchar
+}
+
+Table STAFFDETAILS {
+  STAFFDETAILSID integer [primary key]
+  STAFFNAME nvarchar
+  STAFFGENDER nvarchar 
+  STAFFBIRTH date
+  STAFFADDRESS nvarchar
+  STAFFSID integer
+}
+
+Table FOOD {
+  FOODID integer [primary key]
+  FOODTITLE nvarchar
+  FOODDESCRIPTION nvarchar 
+  FOODPLATESIZE nvarchar
+  FOODIMG img
+  FOODPRICE decimal
+}
+
+Table ORDERMASTER {
+  ORDERMASTERID integer [primary key]
+  CUSTOMERID integer
+  TABLEID integer 
+  STAFFSID integer
+  STAFFDETAILSID integer
+  FOODID integer
+}
+
+Table ORDERITEMS {
+  ORDERITEMSID integer [primary key]
+  ORDERQUANTITY integer
+  FOODID integer
+  ORDERMASTERID integer
+}
+
+
+Ref: CUSTOMER.CUSTOMERID < TABLES.CUSTOMERID // many-to-one
+
+Ref: STAFFS.STAFFSID < STAFFDETAILS.STAFFSID
+
+Ref: FOOD.FOODID < ORDERMASTER.FOODID
+
+Ref: CUSTOMER.CUSTOMERID < ORDERMASTER.CUSTOMERID
+
+Ref: TABLES.TABLEID < ORDERMASTER.TABLEID
+
+Ref: STAFFS.STAFFSID < ORDERMASTER.STAFFSID
+
+Ref: STAFFDETAILS.STAFFDETAILSID < ORDERMASTER.STAFFDETAILSID
+
+Ref: ORDERITEMS.ORDERMASTERID > ORDERMASTER.ORDERMASTERID
+
+Ref: ORDERITEMS.FOODID > FOOD.FOODID
